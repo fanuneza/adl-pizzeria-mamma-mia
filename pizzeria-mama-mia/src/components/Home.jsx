@@ -1,8 +1,23 @@
+import { useState, useEffect } from "react";
 import Header from "./Header";
 import CardPizza from "./CardPizza";
-import { pizzas } from "../utils/pizzas";
+import { pizzas as localPizzas } from "../utils/pizzas";
+import { IMAGES_URL } from "../utils/api";
+
+const API_URL = "http://localhost:5000/api/pizzas";
 
 const Home = () => {
+  const [pizzas, setPizzas] = useState([]);
+
+  useEffect(() => {
+    fetch(API_URL)
+      .then((response) => response.json())
+      .then((data) => setPizzas(data))
+      .catch(() => {
+        setPizzas(localPizzas);
+      });
+  }, []);
+
   return (
     <div>
       <Header />
@@ -15,7 +30,7 @@ const Home = () => {
                 name={pizza.name}
                 price={pizza.price}
                 ingredients={pizza.ingredients}
-                img={pizza.img}
+                img={`${IMAGES_URL}/${pizza.img}`}
                 desc={pizza.desc}
               />
             </div>
