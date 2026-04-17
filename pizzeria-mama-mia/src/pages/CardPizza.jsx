@@ -30,7 +30,6 @@ const CardPizza = ({ id, name, price, ingredients, img, desc }) => {
           </button>
 
           {cartItem ? (
-            // Pizza is in the cart — show controls
             <div className="d-flex align-items-center gap-2">
               <button
                 className="btn btn-sm btn-outline-secondary"
@@ -47,7 +46,6 @@ const CardPizza = ({ id, name, price, ingredients, img, desc }) => {
               </button>
             </div>
           ) : (
-            // Pizza is not in the cart — show add button
             <button className="btn btn-sm btn-dark" onClick={handleAddToCart}>
               Añadir 🛒
             </button>
