@@ -1,30 +1,9 @@
-import { useState } from "react";
-import { pizzaCart } from "../utils/pizzas";
+import { useCart } from "../context/CartContext";
 import { formatPrice } from "../utils/formatPrice";
 import "./Cart.css";
 
 const Cart = () => {
-  const [cart, setCart] = useState(pizzaCart);
-
-  const handleIncrease = (id) => {
-    setCart(
-      cart.map((item) =>
-        item.id === id ? { ...item, count: item.count + 1 } : item
-      )
-    );
-  };
-
-  const handleDecrease = (id) => {
-    setCart(
-      cart
-        .map((item) =>
-          item.id === id ? { ...item, count: item.count - 1 } : item
-        )
-        .filter((item) => item.count > 0)
-    );
-  };
-
-  const total = cart.reduce((acc, item) => acc + item.price * item.count, 0);
+  const { cart, addToCart, removeFromCart, total } = useCart();
 
   return (
     <div className="container my-4">
@@ -39,14 +18,14 @@ const Cart = () => {
             <div className="cart-item-controls">
               <button
                 className="btn btn-sm btn-outline-secondary"
-                onClick={() => handleDecrease(item.id)}
+                onClick={() => removeFromCart(item.id)}
               >
                 −
               </button>
               <span className="cart-item-count">{item.count}</span>
               <button
                 className="btn btn-sm btn-outline-secondary"
-                onClick={() => handleIncrease(item.id)}
+                onClick={() => addToCart(item)}
               >
                 +
               </button>

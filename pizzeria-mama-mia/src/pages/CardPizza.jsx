@@ -1,7 +1,16 @@
 import "./CardPizza.css";
 import { formatPrice } from "../utils/formatPrice";
+import { useCart } from "../context/CartContext";
 
-const CardPizza = ({ name, price, ingredients, img, desc }) => {
+const CardPizza = ({ id, name, price, ingredients, img, desc }) => {
+  const { cart, addToCart, removeFromCart } = useCart();
+
+  const cartItem = cart.find((item) => item.id === id);
+
+  const handleAddToCart = () => {
+    addToCart({ id, name, price, ingredients, img, desc });
+  };
+
   return (
     <div className="card">
       <img src={img} className="card-img-top" alt={name} />
@@ -19,7 +28,30 @@ const CardPizza = ({ name, price, ingredients, img, desc }) => {
           <button className="btn btn-sm btn-outline-secondary">
             Ver Más »
           </button>
-          <button className="btn btn-sm btn-dark">Añadir 🛒</button>
+
+          {cartItem ? (
+            // Pizza is in the cart — show controls
+            <div className="d-flex align-items-center gap-2">
+              <button
+                className="btn btn-sm btn-outline-secondary"
+                onClick={() => removeFromCart(id)}
+              >
+                −
+              </button>
+              <span>{cartItem.count}</span>
+              <button
+                className="btn btn-sm btn-outline-secondary"
+                onClick={handleAddToCart}
+              >
+                +
+              </button>
+            </div>
+          ) : (
+            // Pizza is not in the cart — show add button
+            <button className="btn btn-sm btn-dark" onClick={handleAddToCart}>
+              Añadir 🛒
+            </button>
+          )}
         </div>
       </div>
     </div>

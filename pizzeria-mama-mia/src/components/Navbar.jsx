@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { formatPrice } from "../utils/formatPrice";
+import { useCart } from "../context/CartContext";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const total = 25000;
+  const { total } = useCart();
   const token = true;
 
   return (
@@ -20,9 +21,7 @@ const Navbar = () => {
             <Link to="/profile" className="btn btn-sm btn-outline-light">
               🔓 Profile
             </Link>
-            <button className="btn btn-sm btn-outline-light">
-              🔒 Logout
-            </button>
+            <button className="btn btn-sm btn-outline-light">🔒 Logout</button>
           </>
         ) : (
           <>
