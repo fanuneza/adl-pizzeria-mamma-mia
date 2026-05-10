@@ -1,9 +1,11 @@
 import { useCart } from "../context/CartContext";
+import { useUser } from "../context/UserContext";
 import { formatPrice } from "../utils/formatPrice";
 import "./Cart.css";
 
 const Cart = () => {
   const { cart, addToCart, removeFromCart, total } = useCart();
+  const { token } = useUser();
 
   return (
     <div className="container my-4">
@@ -20,7 +22,7 @@ const Cart = () => {
                 className="btn btn-sm btn-outline-secondary"
                 onClick={() => removeFromCart(item.id)}
               >
-                −
+                -
               </button>
               <span className="cart-item-count">{item.count}</span>
               <button
@@ -34,7 +36,9 @@ const Cart = () => {
         ))}
 
         <p className="cart-total">Total: ${formatPrice(total)}</p>
-        <button className="btn btn-secondary">Pagar</button>
+        <button className="btn btn-secondary" disabled={!token}>
+          Pagar
+        </button>
       </div>
     </div>
   );

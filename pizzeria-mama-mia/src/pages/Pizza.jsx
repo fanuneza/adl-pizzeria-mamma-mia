@@ -1,23 +1,34 @@
-import { useState, useEffect } from "react";
-import { formatPrice } from "../utils/formatPrice";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 import { API_BASE_URL, IMAGES_URL } from "../utils/api";
+import { formatPrice } from "../utils/formatPrice";
 import "./Pizza.css";
 
-const PIZZA_ID = "p001";
-
 const Pizza = () => {
+  const { id } = useParams();
+  const { addToCart } = useCart();
   const [pizza, setPizza] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/pizzas/${PIZZA_ID}`)
+    setPizza(null);
+
+    fetch(`${API_BASE_URL}/api/pizzas/${id}`)
       .then((response) => response.json())
       .then((data) => setPizza(data))
       .catch((error) => console.error("Error al cargar la pizza:", error));
-  }, []);
+  }, [id]);
 
   if (!pizza) {
     return <p className="pizza-loading">Cargando...</p>;
   }
+
+  const handleAddToCart = () => {
+    addToCart({
+      ...pizza,
+      img: `${IMAGES_URL}/${pizza.img}`,
+    });
+  };
 
   return (
     <div className="container pizza-detail my-5">
@@ -41,7 +52,7 @@ const Pizza = () => {
           <p className="pizza-detail__price">
             Precio: <strong>${formatPrice(pizza.price)}</strong>
           </p>
-          <button className="btn btn-dark pizza-detail__btn">
+          <button className="btn btn-dark pizza-detail__btn" onClick={handleAddToCart}>
             Añadir al carrito 🛒
           </button>
         </div>

@@ -1,6 +1,7 @@
-import "./CardPizza.css";
-import { formatPrice } from "../utils/formatPrice";
+import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { formatPrice } from "../utils/formatPrice";
+import "./CardPizza.css";
 
 const CardPizza = ({ id, name, price, ingredients, img, desc }) => {
   const { cart, addToCart, removeFromCart } = useCart();
@@ -25,9 +26,9 @@ const CardPizza = ({ id, name, price, ingredients, img, desc }) => {
         </ul>
         <p className="price-text fw-bold">Precio: ${formatPrice(price)}</p>
         <div className="d-flex justify-content-between card-buttons">
-          <button className="btn btn-sm btn-outline-secondary">
-            Ver Más »
-          </button>
+          <Link to={`/pizza/${id}`} className="btn btn-sm btn-outline-secondary">
+            Ver más »
+          </Link>
 
           {cartItem ? (
             <div className="d-flex align-items-center gap-2">
@@ -35,7 +36,7 @@ const CardPizza = ({ id, name, price, ingredients, img, desc }) => {
                 className="btn btn-sm btn-outline-secondary"
                 onClick={() => removeFromCart(id)}
               >
-                −
+                -
               </button>
               <span>{cartItem.count}</span>
               <button
