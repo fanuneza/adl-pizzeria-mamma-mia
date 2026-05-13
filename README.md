@@ -16,9 +16,9 @@ Proyecto de pizzería desarrollado con React y Vite para el bootcamp **Desafío 
 ```text
 .
 |-- pizzeria-mama-mia/
-|   `-- Frontend React + Vite
+|   `-- Frontend React 19 + Vite 8
 `-- simple-api-backend-nodejs-express-fs-json-jwt-main/
-    `-- Backend Node.js + Express + JWT
+    `-- Backend Node.js + Express 4 + JWT
 ```
 
 ## Requisitos
@@ -28,7 +28,9 @@ Proyecto de pizzería desarrollado con React y Vite para el bootcamp **Desafío 
 
 ## Instalación y ejecución
 
-Instala y levanta primero el backend:
+Cada proyecto tiene su propio `package.json` y debe instalarse por separado.
+
+### 1. Backend
 
 ```bash
 cd simple-api-backend-nodejs-express-fs-json-jwt-main
@@ -42,7 +44,9 @@ El backend queda disponible en:
 http://localhost:5000
 ```
 
-En otra terminal, instala y levanta el frontend:
+### 2. Frontend
+
+En otra terminal:
 
 ```bash
 cd pizzeria-mama-mia
@@ -56,9 +60,19 @@ El frontend queda disponible en:
 http://localhost:5173
 ```
 
+## Configuración de entorno
+
+El backend requiere una variable de entorno `JWT_SECRET`. El repositorio ya incluye un archivo `.env` con un valor por defecto:
+
+```env
+JWT_SECRET=increiblementeSecreto
+```
+
+> **Nota:** En producción debes reemplazar este valor por una clave segura.
+
 ## Scripts disponibles
 
-Frontend:
+**Frontend:**
 
 ```bash
 npm run dev      # Servidor de desarrollo
@@ -67,7 +81,7 @@ npm run preview  # Previsualizar build
 npm run lint     # Ejecutar ESLint
 ```
 
-Backend:
+**Backend:**
 
 ```bash
 npm start        # Ejecutar API
@@ -85,15 +99,35 @@ GET  /api/auth/me
 POST /api/checkouts
 ```
 
-Las rutas de perfil y checkout requieren enviar el token JWT en el header `Authorization`.
+Las rutas de perfil (`/api/auth/me`) y checkout (`/api/checkouts`) requieren enviar el token JWT en el header:
+
+```text
+Authorization: Bearer <token_jwt>
+```
 
 ## Tecnologías utilizadas
 
-- React
-- Vite
-- React Router DOM
+- React 19
+- Vite 8
+- React Router DOM 7
 - Context API
-- Bootstrap 5
+- Bootstrap 5.3
 - Node.js
-- Express
+- Express 4
 - JSON Web Token
+
+## Solución de problemas
+
+### Puerto 5000 ocupado
+
+Si al iniciar el backend ves el error `EADDRINUSE: address already in use :::5000`, significa que otro proceso está usando ese puerto. Puedes cambiarlo temporalmente:
+
+```bash
+# Windows (PowerShell)
+$env:PORT=5001; npm start
+
+# Windows (Git Bash / Linux / macOS)
+PORT=5001 npm start
+```
+
+Luego actualiza la URL de la API en el frontend si es necesario.
