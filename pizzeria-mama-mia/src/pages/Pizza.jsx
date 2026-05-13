@@ -8,15 +8,24 @@ import "./Pizza.css";
 const Pizza = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
-  const [pizza, setPizza] = useState(null);
+  const [pizzaState, setPizzaState] = useState({ id: null, pizza: null });
+  const pizza = pizzaState.id === id ? pizzaState.pizza : null;
 
   useEffect(() => {
-    setPizza(null);
+    let ignore = false;
 
     fetch(`${API_BASE_URL}/api/pizzas/${id}`)
       .then((response) => response.json())
-      .then((data) => setPizza(data))
+      .then((data) => {
+        if (!ignore) {
+          setPizzaState({ id, pizza: data });
+        }
+      })
       .catch((error) => console.error("Error al cargar la pizza:", error));
+
+    return () => {
+      ignore = true;
+    };
   }, [id]);
 
   if (!pizza) {

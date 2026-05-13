@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useUser } from "../context/UserContext";
 import { formatPrice } from "../utils/formatPrice";
@@ -7,6 +7,12 @@ import "./Navbar.css";
 const Navbar = () => {
   const { total } = useCart();
   const { token, logout } = useUser();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <nav className="navbar navbar-dark bg-dark px-3 d-flex justify-content-between">
@@ -22,7 +28,10 @@ const Navbar = () => {
             <Link to="/profile" className="btn btn-sm btn-outline-light">
               🔓 Perfil
             </Link>
-            <button className="btn btn-sm btn-outline-light" onClick={logout}>
+            <button
+              className="btn btn-sm btn-outline-light"
+              onClick={handleLogout}
+            >
               🔒 Cerrar sesión
             </button>
           </>

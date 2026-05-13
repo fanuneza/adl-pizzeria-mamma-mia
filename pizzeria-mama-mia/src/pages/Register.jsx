@@ -1,35 +1,58 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import "./Register.css";
 
 const RegisterPage = () => {
+  const { register } = useUser();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setError("");
+
     if (!email || !password || !confirmPassword) {
-      alert("Todos los campos son obligatorios.");
+      setError("Todos los campos son obligatorios.");
       return;
     }
+
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      alert("Por favor ingresa un correo electrónico válido.");
+      setError("Por favor ingresa un correo electrónico válido.");
       return;
     }
+
     if (password.length < 6) {
-      alert("La contraseña debe tener al menos 6 caracteres.");
+      setError("La contraseña debe tener al menos 6 caracteres.");
       return;
     }
+
     if (password !== confirmPassword) {
-      alert("Las contraseñas no coinciden.");
+      setError("Las contraseñas no coinciden.");
       return;
     }
-    alert("¡Registro exitoso!");
+
+    try {
+      setLoading(true);
+      await register(email, password);
+      navigate("/profile");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="register-container">
       <div className="register-card">
         <h2>Registro</h2>
+
+        {error && <div className="alert alert-danger">{error}</div>}
 
         <div className="mb-3">
           <label className="form-label">Correo electrónico</label>
@@ -64,8 +87,12 @@ const RegisterPage = () => {
           />
         </div>
 
-        <button className="btn btn-primary w-100 mt-2" onClick={handleSubmit}>
-          Registrarse
+        <button
+          className="btn btn-primary w-100 mt-2"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? "Registrando..." : "Registrarse"}
         </button>
       </div>
     </div>
