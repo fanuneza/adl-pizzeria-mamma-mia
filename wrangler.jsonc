@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "adl-pizzeria-mamma-mia",
+  "compatibility_date": "2026-05-13",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "pizzeria-mama-mia"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
