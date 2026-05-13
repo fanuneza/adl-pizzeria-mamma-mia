@@ -23,3 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 *.pdf
+
+# Docs
+*.md
+.claude/
